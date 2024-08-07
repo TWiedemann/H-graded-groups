@@ -1,0 +1,175 @@
+Identity (1):
+(y_4)^*
+=
+-(-y_4)^*
+
+Identity (2):
+-y_{15}(y_2)^*
+=
+-(y_2y_{15})^*
+
+Identity (3):
+(\psi_{\gamma,\epsilon}(-y_8,y_5))^*
+=
+-(\psi_{\alpha,\gamma}(y_5,y_8))^*
+
+Identity (4):
+(\psi_{\gamma,\epsilon}(-(y_4)^*(-(y_{12})^*),y_5))^*
+=
+-(\psi_{\gamma,\epsilon}(-y_5y_{12},y_4))^*
+
+Identity (5):
+\psi_{\alpha,\gamma}(y_1,y_3)
+=
+(\psi_{\gamma,\epsilon}(y_3,y_1))^*
+
+Identity (6):
+-\psi_{\gamma,\epsilon}(y_{12},y_1)
+=
+\psi_{\alpha,\gamma}(y_1,(y_{12})^*)
+
+Identity (7):
+\psi_{\alpha,\gamma}((y_{10})^*,(y_4)^*(-(y_{12})^*))
+=
+\psi_{\beta,\delta}(y_4(y_{10})^*,-(y_{12})^*)
+
+Identity (8):
+\psi_{\alpha,\gamma}((y_{10})^*,(y_4)^*(-(y_{12})^*))
+=
+\psi_{\alpha,\gamma}(y_4(y_{10})^*,(y_{12})^*)
+
+Identity (9):
+\psi_{\alpha,\delta}^\gamma(y_1,-(y_4)^*)
+=
+\psi_{\beta,\epsilon}^\gamma(-y_4,y_1)
+
+Identity (10):
+-\psi_{\beta,\epsilon}^\delta((y_7)^*,y_{15})
+=
+-\psi_{\alpha,\delta}^\beta(y_{15},(y_7)^*)
+
+Identity (11):
+-\psi_{\alpha,\delta}^\beta(y_{14},y_{10})
+=
+-\psi_{\beta,\epsilon}^\delta((y_{10})^*,-y_{14})
+
+Identity (12):
+\psi_{\beta,\epsilon}^\delta((y_2)^*,y_5)
+=
+-(\psi_{\alpha,\delta}^\beta(y_5,y_2))^*
+
+Identity (13):
+(\psi_{\alpha,\delta}^\beta(-(y_{10})^*,(y_7)^*))^*
+=
+-\psi_{\beta,\epsilon}^\delta((y_7)^*,y_{10})
+
+Identity (14):
+-\psi_{\alpha,\gamma}(\psi_{\alpha,\gamma}(y_1,y_3),y_8)
+=
+0
+
+Identity (15):
+-\psi_{\alpha,\gamma}(y_9,\psi_{\alpha,\delta}^\gamma(y_1,-(y_4)^*))
+=
+0
+
+Identity (16):
+-\psi_{\alpha,\delta}^\gamma(\psi_{\alpha,\gamma}(y_3,y_5),-y_{13})
+=
+0
+
+Identity (17):
+-(-\psi_{\alpha,\gamma}(\psi_{\alpha,\gamma}(y_{12},y_1),(y_4)^*(-(y_{12})^*))+(-(\psi_{\beta,\epsilon}^\gamma(y_{12},\psi_{\alpha,\delta}^\gamma(y_1,-(y_4)^*)))^*))
+=
+0
+
+Identity (18):
+-(\psi_{\alpha,\gamma}(-\psi_{\alpha,\delta}^\gamma(y_{15},(y_6)^*)+(-\psi_{\alpha,\gamma}(\psi_{\alpha,\delta}^\beta(y_{15},(y_6)^*),(y_6)^*)),\psi_{\alpha,\epsilon}^\beta((y_4)^*,y_{15})+\psi_{\alpha,\gamma}((y_4)^*,\psi_{\alpha,\delta}^\gamma((y_4)^*,\psi_{\alpha,\epsilon}^\delta((y_4)^*,y_{15}))+\psi_{\alpha,\epsilon}^\gamma((y_4)^*,y_{15}))+\psi_{\alpha,\delta}^\beta((y_4)^*,\psi_{\alpha,\epsilon}^\delta((y_4)^*,y_{15})))+(-(y_4)^*(\psi_{\alpha,\delta}^\beta(y_{15},(y_6)^*))^*))
+=
+-\psi_{\alpha,\gamma}(\psi_{\alpha,\gamma}(\psi_{\alpha,\epsilon}^\beta(y_{15},y_4),\psi_{\alpha,\epsilon}^\delta(y_{15},y_4))+(-\psi_{\beta,\epsilon}^\gamma(-\psi_{\alpha,\epsilon}^\beta(y_{15},y_4),y_4))+(-\psi_{\alpha,\epsilon}^\gamma(y_{15},y_4)),(y_6)^*)
+
+Identity (19):
+\psi_{\alpha,\gamma}((y_7)^*,\psi_{\alpha,\delta}^\beta(y_{14},y_{10}))
+=
+-\psi_{\alpha,\gamma}(y_{14},\psi_{\beta,\epsilon}^\gamma(-(y_7)^*,y_{10})+(-\psi_{\alpha,\gamma}((y_7)^*,\psi_{\beta,\epsilon}^\delta((y_7)^*,y_{10}))))
+
+Identity (20):
+-((\psi_{\beta,\epsilon}^\gamma(-(y_2)^*,y_5)+(-\psi_{\alpha,\gamma}((y_2)^*,\psi_{\beta,\epsilon}^\delta((y_2)^*,y_5))))y_{14}+\psi_{\alpha,\gamma}(\psi_{\beta,\epsilon}^\delta((y_2)^*,y_5),\psi_{\alpha,\epsilon}^\delta((y_2)^*,y_{14}))+(-\psi_{\alpha,\gamma}(-\psi_{\alpha,\gamma}(\psi_{\alpha,\epsilon}^\beta((y_2)^*,y_{14}),\psi_{\alpha,\epsilon}^\delta((y_2)^*,y_{14}))+\psi_{\alpha,\delta}^\gamma((y_2)^*,\psi_{\alpha,\epsilon}^\delta((y_2)^*,y_{14}))+\psi_{\alpha,\epsilon}^\gamma((y_2)^*,y_{14}),y_5)))
+=
+0
+
+Identity (21):
+\psi_{\alpha,\epsilon}^\beta(y_{14},y_1)
+=
+-\psi_{\alpha,\epsilon}^\delta(y_1,-y_{14})
+
+Identity (22):
+h_1(-y_{15},(y_4)^*)
+=
+h_1(y_{15},y_4)
+
+Identity (23):
+h_1(-y_5,y_1)
+=
+(h_1(y_5,y_1))^*
+
+Identity (24):
+f(h_1(y_1,y_5)+f(y_1,g(h_1(-y_5,y_1),y_1)+h_2(y_1,y_5))+(-g(y_1,h_1(-y_5,y_1))),y_8)
+=
+-(-f(y_5,y_8))y_1
+
+Identity (25):
+0
+=
+-f(y_{10},h_1(y_{15},y_4))+g(y_{15},y_4(y_{10})^*)
+
+Identity (26):
+-y_{15}(-g(y_1,y_4))
+=
+g(y_1,h_1(y_{15},y_4))
+
+Identity (27):
+0
+=
+-(g(y_{15}y_5,y_{10})+(-g(y_{15},h_1(y_5,y_{10})+f(y_5,g(h_1(-y_{10},y_5),y_5)+h_2(y_5,y_{10}))+(-g(y_5,h_1(-y_{10},y_5))))))
+
+Identity (28):
+f(h_1(y_1,y_5),h_1(-y_5,y_1))+g(h_1(-y_5,y_1),y_1)+h_2(y_1,y_5)
+=
+-(-f(h_1(y_5,y_1),h_1(-y_1,y_5))+(-g(h_1(y_5,y_1),y_1))+(-h_2(y_5,y_1)))
+
+Identity (29):
+-(-(h_1(-f(y_{12},y_1),y_5))^*+(-0)+g(y_{12},f(h_1(y_1,y_5),h_1(-y_5,y_1))+g(h_1(-y_5,y_1),y_1)+h_2(y_1,y_5)))
+=
+-y_1(y_5(y_{12})^*)
+
+Identity (30):
+h_1(-y_{15},f(y_3,y_5))
+=
+-f(h_1(-y_{15},y_3),y_{15}y_5)
+
+Identity (31):
+h_1(-y_{15},h_1(-y_5,y_1))
+=
+h_1(y_{15}y_5,y_1)
+
+Identity (32):
+g(y_{15},y_1(y_7)^*)
+=
+g(g(y_{15},y_7),y_1)
+
+Identity (33):
+0
+=
+-(f(y_{15}y_5,f(h_1(y_5,y_{10}),h_1(-y_{10},y_5))+g(h_1(-y_{10},y_5),y_5)+h_2(y_5,y_{10}))+g(h_1(y_5,y_{10})+f(y_5,g(h_1(-y_{10},y_5),y_5)+h_2(y_5,y_{10}))+(-g(y_5,h_1(-y_{10},y_5))),y_{15}))
+
+Identity (34):
+-g(f(h_1(y_1,y_5),h_1(-y_5,y_1))+g(h_1(-y_5,y_1),y_1)+h_2(y_1,y_5),y_{12})+(-(-f(y_{12},y_1))h_1(-y_5,y_1))
+=
+0
+
+Identity (35):
+-(f(g(y_4,y_1)(y_{14})^*,h_1(y_{14},y_1))+(-g(h_1(y_{14},y_1),y_4))+h_1(-y_{14},g(y_1,y_4)))
+=
+0
+
