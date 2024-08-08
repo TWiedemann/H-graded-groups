@@ -1,4 +1,4 @@
-In the file H3-blue.g, we perform the blueprint computation in [BW, Section 8]. More precisely:
+In the file H3-blue.g, we perform the blueprint computation from [BW, Section 8]. More precisely:
 1. Using GAP records, we define a data structure to represent mathematical terms as trees.
 2. In "defineComMaps()", we define GAP functions to perform operations on these trees. The precise definition of these functions depends on the identities which have already been established.
 3. We define the blueprint rewriting rules for H_3 in terms of these GAP functions.
