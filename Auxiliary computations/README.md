@@ -1,5 +1,5 @@
 This folder contains the following files, which should be read in the read-eval-print loop of GAP in the following order:
-1. H3-roots.g. In this file, we define D_6 as a finite subset of a 6-dimensional vector space and a projection map on a 3-dimensional subspace. The image of D_6 under this map is H_3. We also define various auxiliary functions for handling H_3 in this way. The mathematical background in explained in [BW, Section 4].
+1. H3-roots.g. In this file, we define D_6 as a finite subset of a 6-dimensional vector space and a projection map on a 3-dimensional subspace. The image of D_6 under this map is H_3. We also define various auxiliary functions for handling H_3 in this way. The mathematical background is explained in [BW, Section 4].
 2. H3-group.g. In this file, we first define the root homomorphisms of a simply connected Chevalley group of type D_6, and then define an H_3-grading of this group. We also define functions which compute the so-called parity map of this group. The mathematical background is explained in [BW, Section 4].
 3. H3-test.g. In this file, we define various test functions which prove certain claims in [BW]. Comments indicate which claims in [BW] are proven. The reader who wants to verify the correctness of these claims should call "testAll()" and observe that this function returns "true".
 
