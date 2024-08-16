@@ -1,4 +1,4 @@
-The GAP code in this repository contains several computations that support the paper "H_3-graded groups" by Lennart Berg and Torben Wiedemann. We refer to this paper by [BW] in the code.
+The GAP code in this repository contains several computations that support the paper "H_3-graded groups" (https://arxiv.org/abs/2408.06745) by Lennart Berg and Torben Wiedemann. We refer to this paper by [BW] in the code.
 1. "Blueprint computations" contains the code for the blueprint computations (see [BW, Section 8]) and the results of these computations (in tex, pdf and txt format).
 2. "Auxiliary computations" contains all remaining computations for various claims. In particular, it contains:
    (a) The realisation of the root system H_3 as a folding of D_6.
