@@ -62,7 +62,7 @@ D6VecWBas := Basis(D6Vec, Concatenation(W1BasList, W2BasList)); # Basis of D6Vec
 
 ## Projection maps
 # alpha: Element of D6Vec
-# Output: The projection on alpha onto W1 or W2, respectively
+# Output: The projection of alpha onto W1 or W2, respectively
 projW1 := function(alpha)
 	local coeff, vectors;
 	coeff := Coefficients(D6VecWBas, alpha);
