@@ -30,6 +30,14 @@ E8SimStandOrderBas := Basis(E8Vec, E8SimStandOrder);
 E8Sim := E8SimStandOrder{[7, 6, 5, 4, 2, 3, 8, 1]};
 E8SimBas := Basis(E8Vec, E8Sim);
 
+E8RootFromNumber := function(rootNum)
+	return E8Roots[rootNum];
+end;
+
+E8NumberFromRoot := function(root)
+	return Position(E8Roots, root);
+end;
+
 # D6 as a subsystem of E8
 D6Sim := E8Sim{[1..6]};
 D6Vec := Subspace(E8Vec, D6Sim);
