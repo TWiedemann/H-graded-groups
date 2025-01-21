@@ -142,9 +142,9 @@ FoldingPreimage := function(alpha)
 end;
 
 # Root bases of H3 and H4
-H4Sim := [ scaleMap(projW2(E8Sim[1])), scaleMap(projW2(E8Sim[2])), scaleMap(projW2(E8Sim[3])), scaleMap(projW2(E8Sim[7])) ];
+H4Sim := [ scaleMap(projW2(E8Sim[7])), scaleMap(projW2(E8Sim[1])), scaleMap(projW2(E8Sim[2])), scaleMap(projW2(E8Sim[3])) ];
 H4SimBas := Basis(W2, H4Sim);
-H3Sim := H4Sim{[1..3]};
+H3Sim := H4Sim{[2..4]};
 H3Vec := Subspace(W2, H3Sim);
 H3SimBas := Basis(H3Vec, H3Sim);
 
