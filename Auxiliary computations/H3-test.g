@@ -154,22 +154,23 @@ testComRels := function()
 	testComRel := function(root1, root2, test)
 		if test <> comm(root1, root2) then
 			return false;
+		else
+			return true;
 		fi;
 	end;
+	return
 	## Commutator relation in the A_2-subsystem
-	testComRel(H3Sim[1], H3Sim[2], H3RootHom(H3Sim[1]+H3Sim[2], [ a*c, b*d ]));
+		testComRel(H3Sim[1], H3Sim[2], H3RootHom(H3Sim[1]+H3Sim[2], [ a*c, b*d ])) and
 	## Commutator relations in the H_2-subsystem
 	# Roots with one root between them
-	testComRel(quint[1], quint[3], H3RootHom(quint[2], [ 0, a*c ]));
-	testComRel(quint[2], quint[4], H3RootHom(quint[3], [ 0, -a*c ]));
-	testComRel(quint[3], quint[5], H3RootHom(quint[4], [ 0, a*c ]));
+		testComRel(quint[1], quint[3], H3RootHom(quint[2], [ 0, a*c ])) and
+		testComRel(quint[2], quint[4], H3RootHom(quint[3], [ 0, -a*c ])) and
+		testComRel(quint[3], quint[5], H3RootHom(quint[4], [ 0, a*c ])) and
 	# Roots with two roots between them
-	testComRel(quint[1], quint[4], H3RootHom(quint[2], [ 0, -b*c ]) * H3RootHom(quint[3], [ 0, a*d ]));
-	testComRel(quint[2], quint[5], H3RootHom(quint[3], [ 0, b*c ]) * H3RootHom(quint[4], [ 0, -a*d ]));
+		testComRel(quint[1], quint[4], H3RootHom(quint[2], [ 0, -b*c ]) * H3RootHom(quint[3], [ 0, a*d ])) and
+		testComRel(quint[2], quint[5], H3RootHom(quint[3], [ 0, b*c ]) * H3RootHom(quint[4], [ 0, -a*d ])) and
 	# Roots with three roots between them
-	testComRel(quint[1], quint[5], H3RootHom(quint[2], [ b*c, a*b*d ]) * H3RootHom(quint[3], [ -b*d, a*b*c*d ]) * H3RootHom(quint[4], [ a*d, -b*c*d ]));
-	# Everything was ok
-	return true;
+		testComRel(quint[1], quint[5], H3RootHom(quint[2], [ b*c, a*b*d ]) * H3RootHom(quint[3], [ -b*d, a*b*c*d ]) * H3RootHom(quint[4], [ a*d, -b*c*d ]));
 end;
 
 ## ---- Computation of the parity map ----
