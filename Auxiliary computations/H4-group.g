@@ -48,15 +48,20 @@ end;
 # s: Element of R x R.
 # Output: The image of s under the root homomorphism for H4Root in the H4-graded group obtained by folding.
 H4RootHom := function(H4Root, s)
-	local preimage, E8RootShort, E8RootLong;
+	local preimage, E8RootShort, E8RootLong, twist;
 	preimage := FoldingPreimage(H4Root);
 	E8RootShort := preimage[1]; # projW2 of this root is short in GH3
 	E8RootLong := preimage[2];
+	if H4Root = H4Sim[2] then
+		twist := -1;
+	else
+		twist := 1;
+	fi;
 	# if H4Root in [ H3Sim[1], -H3Sim[1] ] then
 		# "Twist" the root homomorphism for H3Sim[1] and -H3Sim[1]
 		# return E8RootHom(E8RootShort, s[1]) * E8RootHom(E8RootLong, -s[2]);
 	# else
-		return E8RootHomOnRoot(E8RootShort, s[1]) * E8RootHomOnRoot(E8RootLong, s[2]);
+		return E8RootHomOnRoot(E8RootShort, s[1]) * E8RootHomOnRoot(E8RootLong, twist*s[2]);
 	# fi;
 end;
 
@@ -75,6 +80,10 @@ end;
 
 ## ---- Tests of the commutator relations in the folding ----
 
+eval := function(mat, indets, values)
+	return List(mat, row -> List(row, x -> oneR*Value(x, indets, values)));
+end;
+
 # Returns true if the commutator relations in [BW, 4.12, Figure 5] hold.
 testComRels := function()
 	local a, b, c, d, quint, comm, testComRel;
@@ -82,7 +91,7 @@ testComRels := function()
 	b := Indeterminate(Integers, 2);
 	c := Indeterminate(Integers, 3);
 	d := Indeterminate(Integers, 4);
-	quint := H2QuintupleFromPair(H3Sim[2], H3Sim[3]);
+	quint := H2QuintupleFromPair(H4Sim[3], H4Sim[4]);
 	# Returns the commutator of two generic elements of the corresponding root groups
 	comm := function(root1, root2)
 		local x, y;
@@ -93,22 +102,25 @@ testComRels := function()
 	testComRel := function(root1, root2, test)
 		if test <> comm(root1, root2) then
 			return false;
+		else
+			return true;
 		fi;
 	end;
-	## Commutator relation in the A_2-subsystem
-	testComRel(H3Sim[1], H3Sim[2], H4RootHom(H3Sim[1]+H3Sim[2], [ a*c, b*d ])); # ok
-	## Commutator relations in the H_2-subsystem
-	# Roots with one root between them
-	testComRel(quint[1], quint[3], H4RootHom(quint[2], [ 0, a*c ])); # ok
-	testComRel(quint[2], quint[4], H4RootHom(quint[3], [ 0, -a*c ])); # ok
-	testComRel(quint[3], quint[5], H4RootHom(quint[4], [ 0, a*c ])); # ok
-	# Roots with two roots between them
-	testComRel(quint[1], quint[4], H4RootHom(quint[2], [ 0, -b*c ]) * H4RootHom(quint[3], [ 0, a*d ])); # ok
-	testComRel(quint[2], quint[5], H4RootHom(quint[3], [ 0, b*c ]) * H4RootHom(quint[4], [ 0, -a*d ])); # ok
-	# Roots with three roots between them
-	testComRel(quint[1], quint[5], H4RootHom(quint[2], [ b*c, a*b*d ]) * H4RootHom(quint[3], [ -b*d, a*b*c*d ]) * H4RootHom(quint[4], [ a*d, -b*c*d ])); # ok
-	# Everything was ok
-	return true;
+	return
+		## Commutator relation in the A_2-subsystem spanned by H4Sim[2], H4Sim[3]
+		testComRel(H4Sim[1], H4Sim[2], H4RootHom(H4Sim[1]+H4Sim[2], [ a*c, b*d ])) and
+		## Commutator relation in the A_2-subsystem spanned by H4Sim[2], H4Sim[3]
+		testComRel(H4Sim[2], H4Sim[3], H4RootHom(H4Sim[2]+H4Sim[3], [ a*c, b*d ])) and
+		## Commutator relations in the H_2-subsystem
+		# Roots with one root between them
+		testComRel(quint[1], quint[3], H4RootHom(quint[2], [ 0, a*c ])) and
+		testComRel(quint[2], quint[4], H4RootHom(quint[3], [ 0, -a*c ])) and
+		testComRel(quint[3], quint[5], H4RootHom(quint[4], [ 0, a*c ])) and
+		# Roots with two roots between them
+		testComRel(quint[1], quint[4], H4RootHom(quint[2], [ 0, -b*c ]) * H4RootHom(quint[3], [ 0, a*d ])) and
+		testComRel(quint[2], quint[5], H4RootHom(quint[3], [ 0, b*c ]) * H4RootHom(quint[4], [ 0, -a*d ])) and
+		# Roots with three roots between them
+		testComRel(quint[1], quint[5], H4RootHom(quint[2], [ b*c, a*b*d ]) * H4RootHom(quint[3], [ -b*d, a*b*c*d ]) * H4RootHom(quint[4], [ a*d, -b*c*d ]));
 end;
 
 ## --- Computation of the parity map for H4 ---
