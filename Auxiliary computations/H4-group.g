@@ -48,20 +48,26 @@ end;
 # s: Element of R x R.
 # Output: The image of s under the root homomorphism for H4Root in the H4-graded group obtained by folding.
 H4RootHom := function(H4Root, s)
-	local preimage, E8RootShort, E8RootLong, twist;
+	local preimage, E8RootShort, E8RootLong, leftTwist, rightTwist, leftTwistList, rightTwistList, f;
 	preimage := FoldingPreimage(H4Root);
 	E8RootShort := preimage[1]; # projW2 of this root is short in GH3
 	E8RootLong := preimage[2];
-	if H4Root = H4Sim[2] then
-		twist := -1;
-	else
-		twist := 1;
+	leftTwist := 1;
+	rightTwist := 1;
+	f := H4RootFromCoeff;
+	leftTwistList := [f(0, gold, gold, 1), f(0, gold, gold^2, gold^2), f(0, gold, 2*gold, gold^2)];
+	rightTwistList := [f(0, 1, 0, 0), f(0, gold, gold, gold), f(0, 1, 1, gold), f(0, gold, gold^2, gold), f(0, 1, gold^2, gold), f(0, 1, gold^2, gold^2), f(0, gold, gold^2, gold^2), f(0, gold, 2*gold, gold^2)];
+	if H4Root in Concatenation(leftTwistList, -leftTwistList) then
+		leftTwist := -1;
+	fi;
+	if H4Root in Concatenation(rightTwistList, -rightTwistList) then
+		rightTwist := -1;
 	fi;
 	# if H4Root in [ H3Sim[1], -H3Sim[1] ] then
 		# "Twist" the root homomorphism for H3Sim[1] and -H3Sim[1]
 		# return E8RootHom(E8RootShort, s[1]) * E8RootHom(E8RootLong, -s[2]);
 	# else
-		return E8RootHomOnRoot(E8RootShort, s[1]) * E8RootHomOnRoot(E8RootLong, twist*s[2]);
+		return E8RootHomOnRoot(E8RootShort, leftTwist*s[1]) * E8RootHomOnRoot(E8RootLong, rightTwist*s[2]);
 	# fi;
 end;
 
@@ -75,7 +81,7 @@ H4WeylEl := function(H4Root, s)
 end;
 
 H4StandardWeyl := function(H4Root)
-	return H4WeylEl(H4Root, [ oneR, oneR ]);
+	return H4WeylEl(H4Root, [ 1, 1 ]);
 end;
 
 ## ---- Tests of the commutator relations in the folding ----
@@ -87,10 +93,14 @@ end;
 # Returns true if the commutator relations in [BW, 4.12, Figure 5] hold.
 testComRels := function()
 	local a, b, c, d, quint, comm, testComRel;
-	a := Indeterminate(Integers, 1);
-	b := Indeterminate(Integers, 2);
-	c := Indeterminate(Integers, 3);
-	d := Indeterminate(Integers, 4);
+	# a := Indeterminate(Integers, 1);
+	# b := Indeterminate(Integers, 2);
+	# c := Indeterminate(Integers, 3);
+	# d := Indeterminate(Integers, 4);
+	a := 2;
+	b := 3;
+	c := 5;
+	d := 7;
 	quint := H2QuintupleFromPair(H4Sim[3], H4Sim[4]);
 	# Returns the commutator of two generic elements of the corresponding root groups
 	comm := function(root1, root2)
@@ -125,8 +135,8 @@ end;
 
 ## --- Computation of the parity map for H4 ---
 
-weylBase := fail; # [ H4StandardWeyl(H4Sim[1]), H4StandardWeyl(H4Sim[2]), H4StandardWeyl(H4Sim[3]), H4StandardWeyl(H4Sim[4])];
-weylBaseInv := fail; # List(weylBase, x -> x^-1);
+weylBase :=  [ H4StandardWeyl(H4Sim[1]), H4StandardWeyl(H4Sim[2]), H4StandardWeyl(H4Sim[3]), H4StandardWeyl(H4Sim[4])];
+weylBaseInv := List(weylBase, x -> x^-1);
 
 # alpha: Root in H4.
 # i: Index of a simple root in H4
@@ -137,6 +147,31 @@ H4ParitySimRoot := function(alpha, i)
 	wInv := weylBaseInv[i];
 	x1 := Indeterminate(Integers, 1);
 	x2 := Indeterminate(Integers, 2);
+	gamma := refl(H4Sim[i], alpha);
+	conj := wInv * H4RootHom(alpha, [x1, x2]) * w;
+	if conj = H4RootHom(gamma, [-x1, -x2]) then
+		return [ -1, -1 ];
+	elif conj = H4RootHom(gamma, [x1, x2]) then
+		return [ 1, 1 ];
+	elif conj = H4RootHom(gamma, [-x1, x2]) then
+		return [ -1, 1 ];
+	elif conj = H4RootHom(gamma, [x1, -x2]) then
+		return [ 1, -1];
+	else
+		return fail;
+	fi;
+end;
+
+# This returns the same result as H4ParitySimRoot, but is much faster because it does not use indeterminates. However, H4ParitySimRoot is needed for a "solid" proof.
+# alpha: Root in H4.
+# i: Index of a simple root in H4
+# Output: A tuple (a, b) in { +-1 }^2 s.t. H4RootHom(alpha, [ 1, 1 ])^{H4StandardWeyl(delta_i)} = H4RootHom(refl(delta_i, alpha), [ a, b ]).
+H4ParitySimRootWithoutIndets := function(alpha, i)
+	local w, wInv, x1, x2, gamma, conj;
+	w := weylBase[i];
+	wInv := weylBaseInv[i];
+	x1 := 1;
+	x2 := 1;
 	gamma := refl(H4Sim[i], alpha);
 	conj := wInv * H4RootHom(alpha, [x1, x2]) * w;
 	if conj = H4RootHom(gamma, [-x1, -x2]) then
@@ -207,13 +242,17 @@ end;
 
 # Returns a list with one entry for each positive root alpha in H4. Each entry is a list [ coeff, e4, e1, e2, e3 ] where coeff is the coefficient list of alpha with respect to H4Sim and ei is the parity of the Weyl element of H4Sim[i] on alpha. I.e. the output is precisely [BW, Figure 5] and the function verifies [BW, 6.16].
 H4ParityTable := function()
-	local resultList, i, j, coeff, entry;
+	local resultList, i, j, coeff, entry, par;
 	resultList := [];
 	for i in [1..Length(H4Pos)] do
 		coeff := List(H4PosCoeffs[i], makeGoldReadable);
 		entry := [ coeff ];
 		for j in [1..4] do
-			Add(entry, H4ParitySimRoot(H4Pos[i], j));
+			par := H4ParitySimRootWithoutIndets(H4Pos[i], j);
+			Add(entry, par);
+			if par = fail then
+				return [coeff, j, fail];
+			fi;
 		od;
 		Add(resultList, entry);
 	od;
@@ -228,7 +267,7 @@ H3ParityTable := function()
 		coeff := List(H3PosCoeffs[i], makeGoldReadable);
 		entry := [ coeff ];
 		for j in [2..4] do
-			Add(entry, H4ParitySimRoot(H3Pos[i], j));
+			Add(entry, H4ParitySimRootWithoutIndets(H3Pos[i], j));
 		od;
 		Add(resultList, entry);
 	od;
@@ -240,10 +279,28 @@ testH4ParityOpposite := function()
 	local alpha, i;
 	for alpha in H4Pos do
 		for i in [1..4] do
-			if H4ParitySimRoot(alpha, i) <> H4ParitySimRoot(-alpha, i) then
+			if H4ParitySimRootWithoutIndets(alpha, i) <> H4ParitySimRootWithoutIndets(-alpha, i) then
 				return false;
 			fi;
 		od;
 	od;
 	return true;
 end;
+
+printTable := function(table)
+	local row, cell, i, j;
+	for j in [1..Length(table)] do
+		row := table[j];
+		if j=6 or j=11 then
+			Print("\n");
+		fi;
+		Print(j, "\t");
+		for i in [2..Length(row)] do
+			Print(row[i], "\t");
+		od;
+		Print("\t", row[1], "\n");
+	od;
+end;
+
+H3Table := H3ParityTable();
+printTable(H3Table);

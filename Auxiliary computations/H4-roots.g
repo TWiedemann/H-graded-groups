@@ -2,6 +2,33 @@
 
 K := CF(5); # Ground field: Rationals adjoined fifth root of unity
 gold := (1 + Sqrt(5))/2; # Golden ratio, contained in K
+# r: Element of K = CF(5).
+# Replaces gold, gold^2, 2*gold by "t", "t^2" and "2t", respectively.
+makeGoldReadable := function(r)
+	if r = gold then
+		return "t";
+	elif r = gold^2 then
+		return "t^2";
+	elif r = gold+2 then
+		return "t+2";
+	elif r = 2*gold+1 then
+		return "2t+1";
+	elif r = 2*gold+2 then
+		return "2t+2";
+	elif r = 3*gold+3 then
+		return "3t+3";
+	elif r = 2*gold then
+		return "2t";
+	elif r = 3*gold+1 then
+		return "3t+1";
+	elif r = 3*gold+2 then
+		return "3t+2";
+	elif r = 4*gold+2 then
+		return "4t+2";
+	else
+		return r;
+	fi;
+end;
 
 ## The root system E8
 E8Lie := SimpleLieAlgebra("E", 8, Rationals);
@@ -148,11 +175,39 @@ H3Sim := H4Sim{[2..4]};
 H3Vec := Subspace(W2, H3Sim);
 H3SimBas := Basis(H3Vec, H3Sim);
 
+# ---- Coefficient stuff
+
+H4RootFromCoeff := function(a, b, c, d)
+	local root;
+	root := a*H4Sim[1] + b*H4Sim[2] + c*H4Sim[3] + d*H4Sim[4];
+	if not root in H4Roots then
+		return false;
+	else
+		return root;
+	fi;
+end;
+
+H4CoeffFromRoot := function(H4Root)
+	return Coefficients(H4SimBas, H4Root);
+end;
+
+H4CoeffFromRootReadable := function(H4Root)
+	return List(H4CoeffFromRoot(H4Root), makeGoldReadable);
+end;
+
+H3CoeffFromRoot := function(H3Root)
+	return Coefficients(H3SimBas, H3Root);
+end;
+
+H3CoeffFromRootReadable := function(H3Root)
+	return List(H3CoeffFromRoot(H3Root), makeGoldReadable);
+end;
+
 # Coefficients of the roots in H3 with respect to H3Sim
-H4Coeffs := List(H4Roots, alpha -> Coefficients(H4SimBas, alpha));
-H4PosCoeffs := List(H4Pos, alpha -> Coefficients(H4SimBas, alpha));
-H3Coeffs := List(H3Roots, alpha -> Coefficients(H3SimBas, alpha));
-H3PosCoeffs := List(H3Pos, alpha -> Coefficients(H3SimBas, alpha));
+H4Coeffs := List(H4Roots, H4CoeffFromRootReadable);
+H4PosCoeffs := List(H4Pos, H4CoeffFromRootReadable);
+H3Coeffs := List(H3Roots, H3CoeffFromRootReadable);
+H3PosCoeffs := List(H3Pos, H3CoeffFromRootReadable);
 
 # ---- Auxiliary functions ----
 
@@ -283,20 +338,6 @@ testReflActionLem := function()
 		od;
 	od;
 	return true;
-end;
-
-# r: Element of K = CF(5).
-# Replaces gold, gold^2, 2*gold by "t", "t^2" and "2t", respectively.
-makeGoldReadable := function(r)
-	if r = gold then
-		return "t";
-	elif r = gold^2 then
-		return "t^2";
-	elif r = 2*gold then
-		return "2t";
-	else
-		return r;
-	fi;
 end;
 
 # Returns true if the assertion of [BW, 2.12] is true, i.e. each root in H3 is contained in precisely 2 subsystems of type A1 x A2, 2 subsystems of type A2 and 2 subsystems of type H2. (By the transitivity of the Weyl group on H3, it suffices to check this for one root.)
