@@ -7,7 +7,7 @@
 # dimension is minimal.
 # In the following (comments), we will denote by R the polynomial ring over
 # the integers. Any function which accepts elements of R also accepts integers.
-V := E8Lie; # = HighestWeightModule(E8Lie, [0, 0, 0, 0, 0, 0, 0, 1]);
+V := E8Lie;
 VBasis := Basis(V);
 dimV := Dimension(V);
 oneR := One(PolynomialRing(Integers, 1));
