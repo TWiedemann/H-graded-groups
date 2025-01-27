@@ -247,7 +247,7 @@ end;
 
 # Returns a list with one entry for each positive root alpha in H4. Each entry is a list [ coeff, e4, e1, e2, e3 ] where coeff is the coefficient list of alpha with respect to H4Sim and ei is the parity of the Weyl element of H4Sim[i] on alpha. I.e. the output is precisely [BW, Figure 5] and the function verifies [BW, 6.16].
 H4ParityTable := function()
-	local resultList, i, j, coeff, entry, par;
+	local resultList, i, j, coeff, entry, par, H4PosCoeffs;
 	# Make sure that the "global variables" for the Weyl elements are set correctly
 	weylBase :=  [ H4StandardWeyl(H4Sim[1]), H4StandardWeyl(H4Sim[2]), H4StandardWeyl(H4Sim[3]), H4StandardWeyl(H4Sim[4])];
 	weylBaseInv := List(weylBase, x -> x^-1);
@@ -271,7 +271,7 @@ end;
 
 # Returns a list with one entry for each positive root alpha in H3. Each entry is a list [ coeff, e1, e2, e3 ] where coeff is the coefficient list of alpha with respect to H4Sim and ei is the parity of the Weyl element of H4Sim[i] on alpha. I.e. the output is precisely [BW, Figure 5] and the function verifies [BW, 6.16].
 H3ParityTable := function()
-	local resultList, i, j, coeff, entry;
+	local resultList, i, j, coeff, entry, H3PosCoeffs;
 	# Make sure that the "global variables" for the Weyl elements are set correctly
 	weylBase :=  [ H4StandardWeyl(H4Sim[1]), H4StandardWeyl(H4Sim[2]), H4StandardWeyl(H4Sim[3]), H4StandardWeyl(H4Sim[4])];
 	weylBaseInv := List(weylBase, x -> x^-1);
