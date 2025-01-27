@@ -174,6 +174,10 @@ testH4ComRels := function()
 	b := Indeterminate(Integers, 2);
 	c := Indeterminate(Integers, 3);
 	d := Indeterminate(Integers, 4);
+	a := 2;
+	b := 3;
+	c := 5;
+	d := 7;
 	quint := H2QuintupleFromPair(H4Sim[3], H4Sim[4]);
 	# Returns the commutator of two generic elements of the corresponding root groups
 	comm := function(root1, root2)
@@ -184,13 +188,14 @@ testH4ComRels := function()
 	end;
 	testComRel := function(root1, root2, test)
 		if test <> comm(root1, root2) then
+			Print(H4CoeffFromRoot(root1), ", ", H4CoeffFromRoot(root2), "\n");
 			return false;
 		else
 			return true;
 		fi;
 	end;
 	return
-		## Commutator relation in the A_2-subsystem spanned by H4Sim[2], H4Sim[3]
+		## Commutator relation in the A_2-subsystem spanned by H4Sim[1], H4Sim[2]
 		testComRel(H4Sim[1], H4Sim[2], H4RootHom(H4Sim[1]+H4Sim[2], [ a*c, b*d ])) and
 		## Commutator relation in the A_2-subsystem spanned by H4Sim[2], H4Sim[3]
 		testComRel(H4Sim[2], H4Sim[3], H4RootHom(H4Sim[2]+H4Sim[3], [ a*c, b*d ])) and
@@ -276,12 +281,13 @@ H3ParityTable := function()
 	weylBase :=  [ H4StandardWeyl(H4Sim[1]), H4StandardWeyl(H4Sim[2]), H4StandardWeyl(H4Sim[3]), H4StandardWeyl(H4Sim[4])];
 	weylBaseInv := List(weylBase, x -> x^-1);
 	# Computation of the table
+	H3PosCoeffs := List(H3Pos, H4CoeffFromRootReadable);
 	resultList := [];
 	for i in [1..Length(H3Pos)] do
 		coeff := List(H3PosCoeffs[i], makeGoldReadable);
 		entry := [ coeff ];
 		for j in [2..4] do
-			Add(entry, H4ParitySimRoot(H3Pos[i], j, true));
+			Add(entry, H4ParitySimRoot(H3Pos[i], j, false));
 		od;
 		Add(resultList, entry);
 	od;

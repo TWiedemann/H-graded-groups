@@ -43,7 +43,15 @@ end;
 # r: An element of R.
 # Output: x_root(r) where x_root is the root homomorphism in the Chevalley group and root = E8Roots[i]
 E8RootHomOnNumber := function(E8RootNumber, r)
-	return matrixExp(r, repMatrix(E8Lie.(E8RootNumber)));
+	local E8TwistSet;
+	# List of roots in E8 which have to be twisted, given by their coefficient vector
+	E8TwistSet := [[ 0, 0, 0, 1, 1, 1, 0, 0 ], [ 0, 1, 1, 1, 1, 1, 0, 0 ], [ 0, 0, 1, 2, 1, 1, 0, 0 ], [ 0, 0, 0, 0, 0, 1, 0, 0 ], [ 1, 1, 1, 1, 1, 1, 0, 0 ], [ 0, 0, 1, 1, 1, 1, 0, 0 ], [ 1, 1, 1, 2, 1, 1, 0, 0 ], [ 0, 1, 1, 2, 1, 1, 0, 0 ], [ 0, 1, 2, 2, 1, 1, 0, 0 ], [ 1, 1, 2, 2, 1, 1, 0, 0 ], [ 1, 2, 2, 2, 1, 1, 0, 0 ]];
+	E8TwistSet := Concatenation(E8TwistSet, -E8TwistSet);
+	if E8CoeffFromRoot(E8RootFromNumber(E8RootNumber)) in E8TwistSet then
+		return matrixExp(-r, repMatrix(E8Lie.(E8RootNumber)));
+	else
+		return matrixExp(r, repMatrix(E8Lie.(E8RootNumber)));
+	fi;
 end;
 
 E8RootHomOnRoot := function(E8Root, r)
@@ -60,18 +68,7 @@ H4RootHom := function(H4Root, s)
 	preimage := FoldingPreimage(H4Root);
 	E8RootShort := preimage[1]; # projW2 of this root is short in GH3
 	E8RootLong := preimage[2];
-	leftTwist := 1;
-	rightTwist := 1;
-	f := H4RootFromCoeff;
-	leftTwistList := [f(0, gold, gold, 1), f(0, gold, gold^2, gold^2), f(0, gold, 2*gold, gold^2)];
-	rightTwistList := [f(0, 1, 0, 0), f(0, gold, gold, gold), f(0, 1, 1, gold), f(0, gold, gold^2, gold), f(0, 1, gold^2, gold), f(0, 1, gold^2, gold^2), f(0, gold, gold^2, gold^2), f(0, gold, 2*gold, gold^2)];
-	if H4Root in Concatenation(leftTwistList, -leftTwistList) then
-		leftTwist := -1;
-	fi;
-	if H4Root in Concatenation(rightTwistList, -rightTwistList) then
-		rightTwist := -1;
-	fi;
-	return E8RootHomOnRoot(E8RootShort, leftTwist*s[1]) * E8RootHomOnRoot(E8RootLong, rightTwist*s[2]);
+	return E8RootHomOnRoot(E8RootShort, s[1]) * E8RootHomOnRoot(E8RootLong, s[2]);
 end;
 
 # H4Root: Root in H4.

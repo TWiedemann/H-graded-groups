@@ -60,14 +60,6 @@ E8SimStandOrderBas := Basis(E8Vec, E8SimStandOrder);
 E8Sim := E8SimStandOrder{[7, 6, 5, 4, 2, 3, 8, 1]};
 E8SimBas := Basis(E8Vec, E8Sim);
 
-E8RootFromNumber := function(rootNum)
-	return E8Roots[rootNum];
-end;
-
-E8NumberFromRoot := function(root)
-	return Position(E8Roots, root);
-end;
-
 # ---- D6 as a subsystem of E8 ----
 D6Sim := E8Sim{[1..6]};
 D6Vec := Subspace(E8Vec, D6Sim);
@@ -206,7 +198,29 @@ end;
 
 
 
-# ---- Coefficients of roots in H3 and H4 ----
+# ---- Root/coefficient conversion functions ----
+
+E8RootFromCoeff := function(a, b, c, d, e, f, g, h)
+	local root;
+	root := a*E8Sim[1] + b*E8Sim[2] + c*E8Sim[3] + d*E8Sim[4] + e*E8Sim[5] + f*E8Sim[6] + g*E8Sim[7] + h*E8Sim[8];
+	if not root in E8Roots then
+		return false;
+	else
+		return root;
+	fi;
+end;
+
+E8CoeffFromRoot := function(E8Root)
+	return Coefficients(E8SimBas, E8Root);
+end;
+
+E8RootFromNumber := function(rootNum)
+	return E8Roots[rootNum];
+end;
+
+E8NumberFromRoot := function(root)
+	return Position(E8Roots, root);
+end;
 
 H4RootFromCoeff := function(a, b, c, d)
 	local root;
