@@ -153,18 +153,6 @@ testD6RootInStandForm := function()
     return true;
 end;
 
-# Returns a list with one entry for each positive root alpha in H4. Each entry is a list [ coeff, b1, b2 ] where coeff is the coefficient list of alpha with respect to H4Sim, b1 is the unique root in E8 with projW2(b1) = alpha and b2 is the unique root in E8 with projW2(b2) = gold*alpha. I.e. the output is precisely [BW, Figure 2].
-H4PosFoldingTable := function()
-	local coeff, alpha, preimage, resultList;
-	resultList := [];
-	for alpha in H4Pos do
-		coeff := List(H4CoeffFromRoot(alpha), makeGoldReadable);
-        preimage := FoldingPreimage(alpha);
-		Add(resultList, [ coeff, preimage[1], preimage[2] ]);
-	od;
-	return resultList;
-end;
-
 ## ---- Tests of the commutator relations ----
 
 # Returns true if the commutator relations in [BW, 4.12, Figure 5] hold for the H4-graded group.
@@ -174,10 +162,6 @@ testH4ComRels := function()
 	b := Indeterminate(Integers, 2);
 	c := Indeterminate(Integers, 3);
 	d := Indeterminate(Integers, 4);
-	a := 2;
-	b := 3;
-	c := 5;
-	d := 7;
 	quint := H2QuintupleFromPair(H4Sim[3], H4Sim[4]);
 	# Returns the commutator of two generic elements of the corresponding root groups
 	comm := function(root1, root2)
@@ -246,69 +230,6 @@ testH3ComRels := function()
 end;
 
 ## ---- Tests concerning the parity map ----
-## ---- Computation of the parity map ----
-
-
-
-# Returns a list with one entry for each positive root alpha in H4. Each entry is a list [ coeff, e4, e1, e2, e3 ] where coeff is the coefficient list of alpha with respect to H4Sim and ei is the parity of the Weyl element of H4Sim[i] on alpha. I.e. the output is precisely [BW, Figure 5] and the function verifies [BW, 6.16].
-H4ParityTable := function()
-	local resultList, i, j, coeff, entry, par, H4PosCoeffs;
-	# Make sure that the "global variables" for the Weyl elements are set correctly
-	weylBase :=  [ H4StandardWeyl(H4Sim[1]), H4StandardWeyl(H4Sim[2]), H4StandardWeyl(H4Sim[3]), H4StandardWeyl(H4Sim[4])];
-	weylBaseInv := List(weylBase, x -> x^-1);
-	# Computation of the table
-	H4PosCoeffs := List(H4Pos, H4CoeffFromRootReadable);
-	resultList := [];
-	for i in [1..Length(H4Pos)] do
-		coeff := List(H4PosCoeffs[i], makeGoldReadable);
-		entry := [ coeff ];
-		for j in [1..4] do
-			par := H4ParitySimRoot(H4Pos[i], j, true);
-			Add(entry, par);
-			if par = fail then
-				return [coeff, j, fail];
-			fi;
-		od;
-		Add(resultList, entry);
-	od;
-	return resultList;
-end;
-
-# Returns a list with one entry for each positive root alpha in H3. Each entry is a list [ coeff, e1, e2, e3 ] where coeff is the coefficient list of alpha with respect to H4Sim and ei is the parity of the Weyl element of H4Sim[i] on alpha. I.e. the output is precisely [BW, Figure 5] and the function verifies [BW, 6.16].
-H3ParityTable := function()
-	local resultList, i, j, coeff, entry, H3PosCoeffs;
-	# Make sure that the "global variables" for the Weyl elements are set correctly
-	weylBase :=  [ H4StandardWeyl(H4Sim[1]), H4StandardWeyl(H4Sim[2]), H4StandardWeyl(H4Sim[3]), H4StandardWeyl(H4Sim[4])];
-	weylBaseInv := List(weylBase, x -> x^-1);
-	# Computation of the table
-	H3PosCoeffs := List(H3Pos, H4CoeffFromRootReadable);
-	resultList := [];
-	for i in [1..Length(H3Pos)] do
-		coeff := List(H3PosCoeffs[i], makeGoldReadable);
-		entry := [ coeff ];
-		for j in [2..4] do
-			Add(entry, H4ParitySimRoot(H3Pos[i], j, false));
-		od;
-		Add(resultList, entry);
-	od;
-	return resultList;
-end;
-
-# Prints a table (of parity values) in a nice format
-printTable := function(table)
-	local row, cell, i, j;
-	for j in [1..Length(table)] do
-		row := table[j];
-		if j=6 or j=11 then
-			Print("\n");
-		fi;
-		Print(j, "\t");
-		for i in [2..Length(row)] do
-			Print(row[i], "\t");
-		od;
-		Print("\t", row[1], "\n");
-	od;
-end;
 
 # Returns true if H4ParitySimRoot(alpha, i) = H4ParitySimRoot(-alpha, i) for all alpha in H4 and i in [1..4]. Claimed in [BW, 6.16].
 testH4ParityOpposite := function()
@@ -334,4 +255,81 @@ testH3InH4Parity := function()
         od;
     od;
     return true;
+end;
+
+## ---- Tables appearing in the paper ----
+
+# Returns a list with one entry for each positive root alpha in H4. Each entry is a list [ coeff, b1, b2 ] where coeff is the coefficient list of alpha with respect to H4Sim, b1 is the unique root in E8 with projW2(b1) = alpha and b2 is the unique root in E8 with projW2(b2) = gold*alpha. I.e. the output is precisely [BW, Figure 2].
+H4PosFoldingTable := function()
+	local coeff, alpha, preimage, resultList;
+	resultList := [];
+	for alpha in H4Pos do
+		coeff := H4CoeffFromRootReadable(alpha);
+        preimage := FoldingPreimage(alpha);
+		Add(resultList, [ coeff, preimage[1], preimage[2] ]);
+	od;
+	return resultList;
+end;
+
+# Prints H4PosFoldingTable in a suitable format to be copied into a LaTeX table
+H4PosFoldingTableTex := function()
+	local table, row;
+	table := H4PosFoldingTable();
+	for row in table do
+		Print("$ ", row[1], " $ & $ ", E8CoeffFromRoot(row[2]), " $ & $ ", E8CoeffFromRoot(row[3]), " $ \\\\\n");
+	od;
+end;
+
+# Returns a list with one entry for each positive root alpha in H4. Each entry is a list [ coeff, e4, e1, e2, e3 ] where coeff is the coefficient list of alpha with respect to H4Sim and ei is the parity of the Weyl element of H4Sim[i] on alpha. I.e. the output is precisely [BW, Figure 5] and the function verifies [BW, 6.16].
+H4ParityTable := function()
+	local resultList, i, j, coeff, entry, par, H4PosCoeffs;
+	# Make sure that the "global variables" for the Weyl elements are set correctly
+	weylBase :=  [ H4StandardWeyl(H4Sim[1]), H4StandardWeyl(H4Sim[2]), H4StandardWeyl(H4Sim[3]), H4StandardWeyl(H4Sim[4])];
+	weylBaseInv := List(weylBase, x -> x^-1);
+	# Computation of the table
+	H4PosCoeffs := List(H4Pos, H4CoeffFromRootReadable);
+	resultList := [];
+	for i in [1..Length(H4Pos)] do
+		coeff := H4PosCoeffs[i];
+		entry := [ coeff ];
+		for j in [1..4] do
+			Add(entry, H4ParitySimRoot(H4Pos[i], j, false));
+		od;
+		Add(resultList, entry);
+	od;
+	return resultList;
+end;
+
+# Prints H4ParityTable in a suitable format to be copied into a LaTeX table
+H4ParityTableTex := function()
+	local table, row, i;
+	table := H4ParityTable();
+	for row in table do
+		Print("$ ", row[1], " $ ");
+		for i in [2..5] do
+			Print("& $ (", row[i][1], ", ", row[i][2], ") $ ");
+		od;
+		Print("\\\\\n");
+	od;
+end;
+
+
+# Returns a list with one entry for each positive root alpha in H3. Each entry is a list [ coeff, e1, e2, e3 ] where coeff is the coefficient list of alpha with respect to H4Sim and ei is the parity of the Weyl element of H4Sim[i] on alpha. I.e. the output is precisely [BW, Figure 5] and the function verifies [BW, 6.16].
+H3ParityTable := function()
+	local resultList, i, j, coeff, entry, H3PosCoeffs;
+	# Make sure that the "global variables" for the Weyl elements are set correctly
+	weylBase :=  [ H4StandardWeyl(H4Sim[1]), H4StandardWeyl(H4Sim[2]), H4StandardWeyl(H4Sim[3]), H4StandardWeyl(H4Sim[4])];
+	weylBaseInv := List(weylBase, x -> x^-1);
+	# Computation of the table
+	H3PosCoeffs := List(H3Pos, H4CoeffFromRootReadable);
+	resultList := [];
+	for i in [1..Length(H3Pos)] do
+		coeff := List(H3PosCoeffs[i]);
+		entry := [ coeff ];
+		for j in [2..4] do
+			Add(entry, H4ParitySimRoot(H3Pos[i], j, false));
+		od;
+		Add(resultList, entry);
+	od;
+	return resultList;
 end;
