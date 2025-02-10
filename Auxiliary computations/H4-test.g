@@ -153,6 +153,43 @@ testD6RootInStandForm := function()
     return true;
 end;
 
+## ---- Tests in the root graded group ----
+
+# Returns true if the twisting involution in the H3-graded group acts on parameters as (x, y) -> (-x, y), and false otherwise. In other words, verifies the assertion of ...
+testH3TwistInvo := function()
+	local x, y, alpha, quint, ep, w;
+	x := Indeterminate(Integers, 1);
+	y := Indeterminate(Integers, 2);
+	for alpha in H3Roots do
+		quint := H2QuintuplesStartingFromRoot(alpha, true)[1];
+		ep := quint[5];
+		w := H3WeylEl(ep, [1,1])^2;
+		if H3RootHom(alpha, [x,y])^w <> H3RootHom(alpha, [-x, y]) then
+			return false;
+		fi;
+	od;
+	return true;
+end;
+
+# Returns true if the twisting involution in the H4-graded group acts on parameters as (x, y) -> (-x, y), and false otherwise. In other words, verifies the assertion of ...
+testH4TwistInvo := function()
+	local x, y, alpha, quint, ep, w, count;
+	x := Indeterminate(Integers, 1);
+	y := Indeterminate(Integers, 2);
+	count := 1;
+	for alpha in H4Roots do
+		Display(count);
+		count := count+1;
+		quint := H2QuintuplesStartingFromRoot(alpha, false)[1];
+		ep := quint[5];
+		w := H4WeylEl(ep, [1,1])^2;
+		if w^-1 * H4RootHom(alpha, [x,y]) * w <> H4RootHom(alpha, [-x, y]) then
+			return false;
+		fi;
+	od;
+	return true;
+end;
+
 ## ---- Tests of the commutator relations ----
 
 # Returns true if the commutator relations in [BW, 4.12, Figure 5] hold for the H4-graded group.

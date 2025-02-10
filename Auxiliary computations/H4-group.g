@@ -122,17 +122,17 @@ H4ParitySimRoot := function(alpha, i, indets)
 end;
 
 # alpha: Root in H4.
-# deltaList: List of roots in H4.
-# Output: The parity of w_{deltaList[1]} ... w_{deltaList[k]} on alpha.
-# H4ParityProd := function(alpha, deltaList)
-# 	local result, basRoot, delta, par;
-# 	result := [ 1, 1 ];
-# 	basRoot := alpha;
-# 	for delta in deltaList do
-# 		par := H4Parity(basRoot, delta);
-# 		result[1] := result[1] * par[1];
-# 		result[2] := result[2] * par[2];
-# 		basRoot := refl(delta, basRoot);
-# 	od;
-# 	return result;
-# end;
+# deltaList: List of indices in [1..4]
+# Output: The parity of w_{H4Sim[deltaList[1]]} ... w_{H4Sim[deltaList[k]]} on alpha.
+H4ParityProd := function(alpha, deltaList)
+	local result, basRoot, i, par;
+	result := [ 1, 1 ];
+	basRoot := alpha;
+	for i in deltaList do
+		par := H4ParitySimRoot(basRoot, i, false);
+		result[1] := result[1] * par[1];
+		result[2] := result[2] * par[2];
+		basRoot := refl(H4Sim[i], basRoot);
+	od;
+	return result;
+end;
