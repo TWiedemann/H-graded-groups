@@ -2,7 +2,7 @@
 
 # ---- Root-system-theoretic tests ----
 
-# Returns true if the decomposition E8Vec = W1 + W2 is orthogonal, otherwise false. Claimed in [BW, 4.5].
+# Returns true if the decomposition E8Vec = W1 + W2 is orthogonal, otherwise false. Claimed in [BW, 4.8].
 testDecompIsOrtho := function()
 	local i, j;
 	for i in [1..Length(W1BasList)] do
@@ -15,7 +15,8 @@ testDecompIsOrtho := function()
 	return true;
 end;
 
-# Returns true if the decomposition E8Vec = W1 + W2 is R-invariant, otherwise false. Here R denotes the set of simple reflections in Weyl(H4). Claimed in [BW, 4.5].
+# Returns true if the decomposition E8Vec = W1 + W2 is R-invariant, otherwise false.
+# Here R denotes the set of simple reflections in Weyl(H4). Claimed in [BW, 4.5].
 testDecompIsInvar := function()
 	local R, r, v;
 	R := [ x -> refl(E8Sim[1], refl(E8Sim[6], x)),
@@ -38,7 +39,8 @@ testDecompIsInvar := function()
 	return true;
 end;
 
-# Returns true if GH3 and GH4 are the disjoint unions of H3, gold*H3 and H4, gold*H4, respectively. Otherwise returns false. Claimed in [BW, 4.5].
+# Returns true if GH3 and GH4 (from our construction) are the disjoint unions of H3, gold*H3 and H4, gold*H4, respectively.
+# Otherwise returns false. Claimed in [BW, 4.8].
 testGHIsGoldenH := function()
 	if Length(H3Roots) <> 30 or Length(GH3Roots) <> 60 or Length(H4Roots) <> 120 or Length(GH4Roots) <> 240 then
 		return false;
@@ -49,7 +51,8 @@ testGHIsGoldenH := function()
 	fi;
 end;
 
-# Returns true if H_3 and H_4 are invariant under all reflections sigma_alpha for alpha in H_3 and alpha in H_4, respectively, I.e. if H_3 and H_4 are indeed root systems. Claimed in [BW, 4.5].
+# Returns true if H_3 and H_4 are invariant under all reflections sigma_alpha for alpha in H_3 and alpha in H_4, respectively.
+# I.e., tests if H_3 and H_4 are indeed root systems. Claimed in [BW, 4.8].
 testHIsRootSystem := function()
 	local alpha, beta;
 	for alpha in H3Roots do
@@ -69,7 +72,9 @@ testHIsRootSystem := function()
 	return true;
 end;
 
-# Returns true if the assertion of [BW, 4.13] is true, i.e. \sigma_{E8Sim[i]} \sigma_{E8Sim[j]}, \sigma(projW2(E(Sim[i])) and \sigma(projW2(E8Sim[j])) act identically on GH3 for all (i,j) in { (1,6), (3,5), (2,4), (7, 8) }.
+# Returns true if the assertion of [BW, 4.8 (c)] is true,
+# i.e. \sigma_{E8Sim[i]} \sigma_{E8Sim[j]}, \sigma(projW2(E(Sim[i])) and \sigma(projW2(E8Sim[j]))
+# act identically on GH4 for all (i,j) in { (1,6), (3,5), (2,4), (7, 8) }.
 testReflActionLem := function()
 	local pair, i, j, r, r1, r2, alpha;
 	for pair in [ [1,6], [3,5], [2,4], [7,8] ] do
@@ -87,7 +92,10 @@ testReflActionLem := function()
 	return true;
 end;
 
-# Returns true if the assertion of [BW, 2.12] is true, i.e. each root in H3 is contained in precisely 2 subsystems of type A1 x A2, 2 subsystems of type A2 and 2 subsystems of type H2. (By the transitivity of the Weyl group on H3, it suffices to check this for one root.)
+# Returns true if the assertion of [BW, 2.19] is true,
+# i.e. each root in H3 is contained in precisely 2 subsystems of type A1 x A1,
+# 2 subsystems of type A2 and 2 subsystems of type H2.
+# (By the transitivity of the Weyl group on H3, it suffices to check this for one root.)
 testH3SubsysProp := function()
 	local baseroot, subsystems, alpha, numA1A1, numA2, numH2;
 	baseroot := H3Sim[1]; # Root for which the property is checked
@@ -103,10 +111,14 @@ testH3SubsysProp := function()
 	return (numA1A1 = 2 and numA2 = 2 and numH2 = 2);
 end;
 
-# Returns true if the assertion of [BW, 5.16] is true, otherwise false. (By the transitivity of the Weyl group, it suffices to check this for one choice of alpha.)
+# Returns true if the assertion of [BW, 5.16] is true, otherwise false.
+# I.e. test that there exist rho with certain properties.
+# (By the transitivity of the Weyl group, it suffices to check this for one choice of alpha.)
 testTwoA2Prop := function()
 	local alpha, H2Quints, H2Quint1, H2Quint2, H2Sub1, H2Sub2, bRhoFound, rho;
 	alpha := H3Sim[2];
+	# The assertion depends on two distinct H2-quintuples starting from alpha (see [BW, 5.13]).
+	# We check that the assertion is true for each possible choice of H2-quintuples.
 	H2Quints := H2QuintuplesStartingFromRoot(alpha, true);
 	for H2Quint1 in H2Quints do
 		for H2Quint2 in H2Quints do
@@ -116,6 +128,7 @@ testTwoA2Prop := function()
 				# If the assertion of the lemma is incorrect for this choice of H2-quintuples, return false.
 				bRhoFound := false; # Whether rho as in the lemma was found
 				for rho in [ H2Quint2[3], H2Quint2[4] ] do
+					# Check that the subsystems are of type A2
 					if Size(generatedSubsystem(H3Roots, [ rho, H2Quint1[2] ])) = 6 and Size(generatedSubsystem(H3Roots, [ rho, H2Quint1[3] ])) = 6 then
 						bRhoFound := true;
 						break;
@@ -153,37 +166,43 @@ testD6RootInStandForm := function()
     return true;
 end;
 
-## ---- Tests in the root graded group ----
-
-# Returns true if the twisting involution in the H3-graded group acts on parameters as (x, y) -> (-x, y), and false otherwise. In other words, verifies the assertion of ...
-testH3TwistInvo := function()
-	local x, y, alpha, quint, ep, w;
-	x := Indeterminate(Integers, 1);
-	y := Indeterminate(Integers, 2);
-	for alpha in H3Roots do
-		quint := H2QuintuplesStartingFromRoot(alpha, true)[1];
-		ep := quint[5];
-		w := H3WeylEl(ep, [1,1])^2;
-		if H3RootHom(alpha, [x,y])^w <> H3RootHom(alpha, [-x, y]) then
-			return false;
-		fi;
-	od;
-	return true;
+testRootSystemProps := function()
+	return testDecompIsOrtho() and testDecompIsInvar() and testGHIsGoldenH()
+		and testHIsRootSystem() and testReflActionLem() and testH3SubsysProp()
+		and testTwoA2Prop() and testD6RootInStandForm();
 end;
 
-# Returns true if the twisting involution in the H4-graded group acts on parameters as (x, y) -> (-x, y), and false otherwise. In other words, verifies the assertion of ...
-testH4TwistInvo := function()
-	local x, y, alpha, quint, ep, w, count;
+## ---- Tests in the root graded group ----
+
+# k: 3 or 4.
+# Returns true if the twisting involution in the Hk-graded group acts on parameters as (x, y) -> (-x, y), and false otherwise.
+# In other words, verifies the assertion of [BW, 5.22].
+# The computation takes long for k = 4, so we display some progress information.
+testHTwistInvo := function(k)
+	local x, y, alpha, quint, ep, w, count, Roots, WeylEl, RootHom;
 	x := Indeterminate(Integers, 1);
 	y := Indeterminate(Integers, 2);
-	count := 1;
-	for alpha in H4Roots do
-		Display(count);
-		count := count+1;
-		quint := H2QuintuplesStartingFromRoot(alpha, false)[1];
+	if k = 3 then
+		Roots := H3Roots;
+		RootHom := H3RootHom;
+		WeylEl := H3WeylEl;
+	elif k = 4 then
+		Roots := H4Roots;
+		RootHom := H4RootHom;
+		WeylEl := H4WeylEl;
+		count := 1; # progress information
+	else
+		return fail;
+	fi;
+	for alpha in Roots do
+		if k=4 then
+			Print("Test twisting involution in H4-grading: ", count, "/", 120, "\n");
+			count := count+1;
+		fi;
+		quint := H2QuintuplesStartingFromRoot(alpha, k=3)[1];
 		ep := quint[5];
-		w := H4WeylEl(ep, [1,1])^2;
-		if w^-1 * H4RootHom(alpha, [x,y]) * w <> H4RootHom(alpha, [-x, y]) then
+		w := WeylEl(ep, [1,1])^2;
+		if w^-1 * RootHom(alpha, [x,y]) * w <> RootHom(alpha, [-x, y]) then
 			return false;
 		fi;
 	od;
@@ -192,9 +211,18 @@ end;
 
 ## ---- Tests of the commutator relations ----
 
-# Returns true if the commutator relations in [BW, 4.12, Figure 5] hold for the H4-graded group.
-testH4ComRels := function()
-	local a, b, c, d, quint, comm, testComRel;
+# k: 3 or 4
+# Returns true if the assertion of [BW, 4.29] holds for H_k.
+# I.e. verifies the commutator relations.
+testHComRels := function(k)
+	local a, b, c, d, quint, comm, testComRel, RootHom;
+	if k=3 then
+		RootHom := H3RootHom;
+	elif k=4 then
+		RootHom := H4RootHom;
+	else
+		return fail;
+	fi;
 	a := Indeterminate(Integers, 1);
 	b := Indeterminate(Integers, 2);
 	c := Indeterminate(Integers, 3);
@@ -203,67 +231,47 @@ testH4ComRels := function()
 	# Returns the commutator of two generic elements of the corresponding root groups
 	comm := function(root1, root2)
 		local x, y;
-		x := H4RootHom(root1, [ a, b ]);
-		y := H4RootHom(root2, [ c, d ]);
+		x := RootHom(root1, [ a, b ]);
+		y := RootHom(root2, [ c, d ]);
 		return x^-1 * y^-1 * x * y;
 	end;
 	testComRel := function(root1, root2, test)
 		if test <> comm(root1, root2) then
-			Print(H4CoeffFromRoot(root1), ", ", H4CoeffFromRoot(root2), "\n");
 			return false;
 		else
 			return true;
 		fi;
 	end;
-	return
+	if k=4 then
 		## Commutator relation in the A_2-subsystem spanned by H4Sim[1], H4Sim[2]
-		testComRel(H4Sim[1], H4Sim[2], H4RootHom(H4Sim[1]+H4Sim[2], [ a*c, b*d ])) and
-		## Commutator relation in the A_2-subsystem spanned by H4Sim[2], H4Sim[3]
-		testComRel(H4Sim[2], H4Sim[3], H4RootHom(H4Sim[2]+H4Sim[3], [ a*c, b*d ])) and
-		## Commutator relations in the H_2-subsystem
-		# Roots with one root between them
-		testComRel(quint[1], quint[3], H4RootHom(quint[2], [ 0, a*c ])) and
-		testComRel(quint[2], quint[4], H4RootHom(quint[3], [ 0, -a*c ])) and
-		testComRel(quint[3], quint[5], H4RootHom(quint[4], [ 0, a*c ])) and
-		# Roots with two roots between them
-		testComRel(quint[1], quint[4], H4RootHom(quint[2], [ 0, -b*c ]) * H4RootHom(quint[3], [ 0, a*d ])) and
-		testComRel(quint[2], quint[5], H4RootHom(quint[3], [ 0, b*c ]) * H4RootHom(quint[4], [ 0, -a*d ])) and
-		# Roots with three roots between them
-		testComRel(quint[1], quint[5], H4RootHom(quint[2], [ b*c, a*b*d ]) * H4RootHom(quint[3], [ -b*d, a*b*c*d ]) * H4RootHom(quint[4], [ a*d, -b*c*d ]));
-end;
-
-# Returns true if the commutator relations in [BW, 4.12, Figure 5] hold for the H3-graded group constructed in H3-group.g. In other words, this H3-graded group satisfies the same commutator relations as the H3-graded subgroup of our H4-graded group.
-testH3ComRels := function()
-	local a, b, c, d, quint, comm, testComRel;
-	a := Indeterminate(Integers, 1);
-	b := Indeterminate(Integers, 2);
-	c := Indeterminate(Integers, 3);
-	d := Indeterminate(Integers, 4);
-	quint := H2QuintupleFromPair(H3Sim[2], H3Sim[3]);
-	# Returns the commutator of two generic elements of the corresponding root groups
-	comm := function(root1, root2)
-		return H3RootHom(root1, [ -a, -b]) * H3RootHom(root2, [ -c, -d ]) * H3RootHom(root1, [ a, b ]) * H3RootHom(root2, [ c, d ]);
-	end;
-	testComRel := function(root1, root2, test)
-		if test <> comm(root1, root2) then
+		Print("Test H", k, " commutator relation (rho_0, rho_1)\n");
+		if testComRel(H4Sim[1], H4Sim[2], RootHom(H4Sim[1]+H4Sim[2], [ a*c, b*d ])) = false then
 			return false;
-		else
-			return true;
 		fi;
-	end;
-	return
-	## Commutator relation in the A_2-subsystem
-		testComRel(H3Sim[1], H3Sim[2], H3RootHom(H3Sim[1]+H3Sim[2], [ a*c, b*d ])) and
+	fi;
+	## Commutator relation in the A_2-subsystem spanned by H4Sim[2]=H3Sim[1], H4Sim[3]=H3Sim[2]
+	Print("Test H", k, " commutator relation (rho_1, rho_2)\n");
+	if testComRel(H4Sim[2], H4Sim[3], RootHom(H4Sim[2]+H4Sim[3], [ a*c, b*d ])) = false then
+		return false;
+	fi;
 	## Commutator relations in the H_2-subsystem
 	# Roots with one root between them
-		testComRel(quint[1], quint[3], H3RootHom(quint[2], [ 0, a*c ])) and
-		testComRel(quint[2], quint[4], H3RootHom(quint[3], [ 0, -a*c ])) and
-		testComRel(quint[3], quint[5], H3RootHom(quint[4], [ 0, a*c ])) and
+	Print("Test H", k, " commutator relations in (rho_2, rho_3) with root interval of length 1\n");
+	if not (testComRel(quint[1], quint[3], RootHom(quint[2], [ 0, a*c ])) and
+		testComRel(quint[2], quint[4], RootHom(quint[3], [ 0, -a*c ])) and
+		testComRel(quint[3], quint[5], RootHom(quint[4], [ 0, a*c ]))) then
+			return false;
+	fi;
 	# Roots with two roots between them
-		testComRel(quint[1], quint[4], H3RootHom(quint[2], [ 0, -b*c ]) * H3RootHom(quint[3], [ 0, a*d ])) and
-		testComRel(quint[2], quint[5], H3RootHom(quint[3], [ 0, b*c ]) * H3RootHom(quint[4], [ 0, -a*d ])) and
+	Print("Test H", k, " commutator relations in (rho_2, rho_3) with root interval of length 2\n");
+	if not (testComRel(quint[1], quint[4], RootHom(quint[2], [ 0, -b*c ]) * RootHom(quint[3], [ 0, a*d ])) and
+		testComRel(quint[2], quint[5], RootHom(quint[3], [ 0, b*c ]) * RootHom(quint[4], [ 0, -a*d ]))) then
+			return false;
+	fi;
 	# Roots with three roots between them
-		testComRel(quint[1], quint[5], H3RootHom(quint[2], [ b*c, a*b*d ]) * H3RootHom(quint[3], [ -b*d, a*b*c*d ]) * H3RootHom(quint[4], [ a*d, -b*c*d ]));
+	Print("Test H", k, " commutator relations in (rho_2, rho_3) with root interval of length 3\n");
+	return testComRel(quint[1], quint[5], 
+		RootHom(quint[2], [ b*c, a*b*d ]) * RootHom(quint[3], [ -b*d, a*b*c*d ]) * RootHom(quint[4], [ a*d, -b*c*d ]));
 end;
 
 ## ---- Tests concerning the parity map ----
@@ -273,7 +281,7 @@ testH4ParityOpposite := function()
 	local alpha, i;
 	for alpha in H4Pos do
 		for i in [1..4] do
-			if H4ParitySimRoot(alpha, i, true) <> H4ParitySimRoot(-alpha, i, true) then
+			if H4ParitySimRoot(alpha, i, false) <> H4ParitySimRoot(-alpha, i, false) then
 				return false;
 			fi;
 		od;
@@ -282,6 +290,7 @@ testH4ParityOpposite := function()
 end;
 
 # Returns true if the parity table of the H3-graded group from H3-group.g coincides with the one of the H3-graded subgroup of the H4-graded group.
+# Claimed in [BW, 4.27].
 testH3InH4Parity := function()
     local alpha, i;
     for alpha in H3Roots do
@@ -296,7 +305,9 @@ end;
 
 ## ---- Tables appearing in the paper ----
 
-# Returns a list with one entry for each positive root alpha in H4. Each entry is a list [ coeff, b1, b2 ] where coeff is the coefficient list of alpha with respect to H4Sim, b1 is the unique root in E8 with projW2(b1) = alpha and b2 is the unique root in E8 with projW2(b2) = gold*alpha. I.e. the output is precisely [BW, Figure 2].
+# Returns a list with one entry for each positive root alpha in H4.
+# Each entry is a list [ coeff, b1, b2 ] where coeff is the coefficient list of alpha with respect to H4Sim,
+# b1 is the unique root in E8 with projW2(b1) = alpha and b2 is the unique root in E8 with projW2(b2) = gold*alpha.
 H4PosFoldingTable := function()
 	local coeff, alpha, preimage, resultList;
 	resultList := [];
@@ -308,7 +319,8 @@ H4PosFoldingTable := function()
 	return resultList;
 end;
 
-# Prints H4PosFoldingTable in a suitable format to be copied into a LaTeX table
+# Prints H4PosFoldingTable in a suitable format to be copied into a LaTeX table.
+# I.e. the output is precisely [BW, Figures 10, 11].
 H4PosFoldingTableTex := function()
 	local table, row;
 	table := H4PosFoldingTable();
@@ -317,7 +329,12 @@ H4PosFoldingTableTex := function()
 	od;
 end;
 
-# Returns a list with one entry for each positive root alpha in H4. Each entry is a list [ coeff, e4, e1, e2, e3 ] where coeff is the coefficient list of alpha with respect to H4Sim and ei is the parity of the Weyl element of H4Sim[i] on alpha. I.e. the output is precisely [BW, Figure 5] and the function verifies [BW, 6.16].
+# Returns a list with one entry for each positive root alpha in H4.
+# Each entry is a list [ coeff, e4, e1, e2, e3 ] where coeff is the coefficient list of alpha with respect to H4Sim
+# and ei is the parity of the Weyl element of H4Sim[i] on alpha.
+# I.e. the output is precisely [BW, Figures 12, 13] and the function verifies [BW, (4.28)].
+# This table is computed with indets = true in H4ParitySim. The fact that no "fail" entry
+# appears in the table implies that H4ParitySimRoot(alpha, j, true) = H4ParitySimRoot(alpha, j, false) for all alpha, j.
 H4ParityTable := function()
 	local resultList, i, j, coeff, entry, par, H4PosCoeffs;
 	# Make sure that the "global variables" for the Weyl elements are set correctly
@@ -330,7 +347,7 @@ H4ParityTable := function()
 		coeff := H4PosCoeffs[i];
 		entry := [ coeff ];
 		for j in [1..4] do
-			Add(entry, H4ParitySimRoot(H4Pos[i], j, false));
+			Add(entry, H4ParitySimRoot(H4Pos[i], j, true));
 		od;
 		Add(resultList, entry);
 	od;
@@ -351,7 +368,10 @@ H4ParityTableTex := function()
 end;
 
 
-# Returns a list with one entry for each positive root alpha in H3. Each entry is a list [ coeff, e1, e2, e3 ] where coeff is the coefficient list of alpha with respect to H4Sim and ei is the parity of the Weyl element of H4Sim[i] on alpha. I.e. the output is precisely [BW, Figure 5] and the function verifies [BW, 6.16].
+# Returns a list with one entry for each positive root alpha in H3.
+# Each entry is a list [ coeff, e1, e2, e3 ] where coeff is the coefficient list of alpha with respect to H4Sim
+# and ei is the parity of the Weyl element of H4Sim[i] on alpha.
+# I.e. the output is precisely [BW, Figure 5] and the function verifies [BW, 6.16].
 H3ParityTable := function()
 	local resultList, i, j, coeff, entry, H3PosCoeffs;
 	# Make sure that the "global variables" for the Weyl elements are set correctly
@@ -369,4 +389,17 @@ H3ParityTable := function()
 		Add(resultList, entry);
 	od;
 	return resultList;
+end;
+
+testH3Group := function()
+	return testHTwistInvo(3) and testHComRels(3) and testH3InH4Parity();
+end;
+
+testH4Group := function()
+	return testHTwistInvo(4) and testHComRels(4) and testH4ParityOpposite();
+end;
+
+# Takes roughly one hour
+testAll := function()
+	return testRootSystemProps() and testH3Group() and testH4Group();
 end;

@@ -41,17 +41,17 @@ end;
 
 # E8RootHomNumber: An integer in [1..Length(E8Roots)]
 # r: An element of R.
-# Output: x_root(r) where x_root is the root homomorphism in the Chevalley group and root = E8Roots[i]
+# Output: x_root(r) where x_root is the root homomorphism in the Chevalley group and root = E8Roots[i].
+# See [BW, 4.23, 4.26].
 E8RootHomOnNumber := function(E8RootNumber, r)
 	local E8TwistSet;
 	# List of roots in E8 which have to be twisted, given by their coefficient vector
 	E8TwistSet := [[ 0, 0, 0, 1, 1, 1, 0, 0 ], [ 0, 1, 1, 1, 1, 1, 0, 0 ], [ 0, 0, 1, 2, 1, 1, 0, 0 ], [ 0, 0, 0, 0, 0, 1, 0, 0 ], [ 1, 1, 1, 1, 1, 1, 0, 0 ], [ 0, 0, 1, 1, 1, 1, 0, 0 ], [ 1, 1, 1, 2, 1, 1, 0, 0 ], [ 0, 1, 1, 2, 1, 1, 0, 0 ], [ 0, 1, 2, 2, 1, 1, 0, 0 ], [ 1, 1, 2, 2, 1, 1, 0, 0 ], [ 1, 2, 2, 2, 1, 1, 0, 0 ]];
 	E8TwistSet := Concatenation(E8TwistSet, -E8TwistSet);
 	if E8CoeffFromRoot(E8RootFromNumber(E8RootNumber)) in E8TwistSet then
-		return matrixExp(-r, repMatrix(E8Lie.(E8RootNumber)));
-	else
-		return matrixExp(r, repMatrix(E8Lie.(E8RootNumber)));
+		r := -r;
 	fi;
+	return matrixExp(r, repMatrix(E8Lie.(E8RootNumber)));
 end;
 
 E8RootHomOnRoot := function(E8Root, r)
@@ -63,6 +63,7 @@ end;
 # H4Root: Root in H4.
 # s: Element of R x R.
 # Output: The image of s under the root homomorphism for H4Root in the H4-graded group obtained by folding.
+# See [BW, 4.21, 4.26].
 H4RootHom := function(H4Root, s)
 	local preimage, E8RootShort, E8RootLong, leftTwist, rightTwist, leftTwistList, rightTwistList, f;
 	preimage := FoldingPreimage(H4Root);
@@ -95,6 +96,8 @@ weylBaseInv := List(weylBase, x -> x^-1);
 # i: Index of a simple root in H4
 # indets: Bool. If indets = true, then indeterminates are used in the computation, so that we have a solid proof that the equality below holds for all r, s in R. If indets = false, then 1 is used in place of indeterminates. This produces the same results and is much faster, but does not provide a solid proof.
 # Output: A tuple (a, b) in { +-1 }^2 s.t. H4RootHom(alpha, [ r, s ])^{H4StandardWeyl(delta_i)} = H4RootHom(refl(delta_i, alpha), [ ar, bs ]) for all r, s in R.
+# Note: In the test functions, we compute all values of the parity map with indets = true. The fact that this computation never produces "fail" shows that the function call with indets = false produces the same results.
+# See [BW, 4.27].
 H4ParitySimRoot := function(alpha, i, indets)
 	local w, wInv, x1, x2, gamma, conj;
 	w := weylBase[i];
