@@ -1,18 +1,20 @@
-### Must be loaded after H3-roots.g.
+### Must be loaded after H4-roots.g.
+
+### In this file, we construct an H3-graded group from scratch. We verify in H4-test.g that the resulting group satisfies the same commutator relations and has the same parity map as the H3-graded subgroup of the H4-graded group constructed in H4-group.g.
 
 ### In the following comments, we denote by R the polynomial ring over the integers in infinitely many variables. We construct root homomorphisms of a simply connected Chevalley group of type D6 over R and the root homomorphisms of the corresponding H3-grading which is obtained by folding.
 ### Mathematical details: Denote by L the Lie algebra o_12 over the complex numbers, which is semisimple of type D6. We compute the Chevalley group corresponding to the natural representation \delta: L -> End_{12}(C) of L in the sense of e.g. Humphreys "Introduction to Lie Algebras and Representation Theory", 27.4. The lattice Z^{12} in C^{12} is admissible with respect to \delta. Using the "standard" representation of the Lie algebra L as matrices (as in D6ChevBasEl), \delta is the identity map. Further, \delta(x_alpha)^2 = 0 for all Chevalley basis elements x_alpha. Hence the root homomorphism for alpha sends r to id + r*x_alpha.
 
-n := 6;
 oneR := One(PolynomialRing(Integers, 1));
 
-## --- The root homomorphisms for D6 and H3 ---
+## --- D6-root homomorphisms ---
 
 # D6Root: Root in D6.
 # Output: The element x_D6Root for a fixed Chevalley basis of the Lie algebra of D6.
 D6ChevBasEl := function(D6Root)
 	local result, posPositions, negPositions, i, j;
-	result := NullMat(2*n, 2*n, Integers);
+	D6Root := D6RootInStandForm(D6Root);
+	result := NullMat(12, 12, Integers);
 	# List of indices where D6Root has value 1 or -1.
 	posPositions := Positions(D6Root, 1);
 	negPositions := Positions(D6Root, -1);
@@ -20,20 +22,20 @@ D6ChevBasEl := function(D6Root)
 		# D6Root is of the form e_i + e_j
 		i := posPositions[1];
 		j := posPositions[2];
-		result[i][n+j] := 1;
-		result[j][n+i] := -1;
+		result[i][6+j] := 1;
+		result[j][6+i] := -1;
 	elif IsEmpty(posPositions) then
 		# D6Root is of the form -e_i - e_j
 		i := negPositions[1];
 		j := negPositions[2];
-		result[n+j][i] := 1;
-		result[n+i][j] := -1;
+		result[6+j][i] := 1;
+		result[6+i][j] := -1;
 	else
 		# D6Root is of the form e_i - e_j
 		i := posPositions[1];
 		j := negPositions[1];
 		result[i][j] := 1;
-		result[n+j][n+i] := -1;
+		result[6+j][6+i] := -1;
 	fi;
 	return result;
 end;
@@ -41,24 +43,29 @@ end;
 # D6Root: Root in D6.
 # r: Element of R.
 # Output: The image of r in the simply connected Chevalley group of type D6 under the root homomorphism for D6Root.
+# See [BW, 4.22, 4.26].
 D6RootHom := function(D6Root, r)
-	return IdentityMat(2*n, PolynomialRing(Integers, 1)) + r*D6ChevBasEl(D6Root);
+	local D6TwistSet;
+	D6TwistSet := [ D6Sim[6] ];
+	D6TwistSet := Concatenation(D6TwistSet, -D6TwistSet);
+	if D6Root in D6TwistSet then
+		r := -r;
+	fi;
+	return IdentityMat(12, PolynomialRing(Integers, 1)) + r*D6ChevBasEl(D6Root);
 end;
+
+# ---- H3-root homomorphisms and Weyl elements ----
 
 # H3Root: Root in H3.
 # s: Element of R x R.
 # Output: The image of s under the root homomorphism for H3Root in the H3-graded group obtained by folding.
+# See [BW, 4.21, 4.26].
 H3RootHom := function(H3Root, s)
 	local preimage, D6RootShort, D6RootLong;
 	preimage := FoldingPreimage(H3Root);
 	D6RootShort := preimage[1]; # projW2 of this root is short in GH3
 	D6RootLong := preimage[2];
-	if H3Root in [ H3Sim[1], -H3Sim[1] ] then
-		# "Twist" the root homomorphism for H3Sim[1] and -H3Sim[1]
-		return D6RootHom(D6RootShort, s[1]) * D6RootHom(D6RootLong, -s[2]);
-	else
-		return D6RootHom(D6RootShort, s[1]) * D6RootHom(D6RootLong, s[2]);
-	fi;
+	return D6RootHom(D6RootShort, s[1]) * D6RootHom(D6RootLong, s[2]);
 end;
 
 # H3Root: Root in H3.
@@ -78,6 +85,7 @@ end;
 
 # alpha, delta: Roots in H3.
 # Output: A tuple (a, b) in { +-1 }^2 s.t. H3RootHom(alpha, [ r, s ])^{H3StandardWeyl(delta)} = H3RootHom(refl(delta, alpha), [ ar, bs ]) for all r, s in R.
+# See [BW, 4.27].
 H3Parity := function(alpha, delta)
 	local w, x1, x2, gamma, conj;
 	w := H3StandardWeyl(delta);

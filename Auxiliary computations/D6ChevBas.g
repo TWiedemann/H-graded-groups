@@ -1,4 +1,5 @@
 ## Verifies that the basis in D6ChevBasEl of H3-group.g is indeed a Chevalley basis, a fact for which we could not find an explicit reference.
+## However, this is not formally needed in [BW]. (We compute that all the desired commutator relations hold anyway.)
 
 K := Rationals;
 n := 6;
