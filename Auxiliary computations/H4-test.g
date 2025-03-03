@@ -305,6 +305,21 @@ end;
 
 ## ---- Tables appearing in the paper ----
 
+# Returns a list with one entry for each positive root alpha in H3.
+# Each entry is a list [ coeff, b1, b2 ] where coeff is the coefficient list of alpha with respect to H3Sim,
+# b1 is the unique root in E8 with projW2(b1) = alpha and b2 is the unique root in E8 with projW2(b2) = gold*alpha.
+# The roots b1 and b2 are given as their coefficients w.r.t. e_1, ..., e_6 (see D6RootInStandForm)
+H3PosFoldingTable := function()
+	local coeff, alpha, preimage, resultList;
+	resultList := [];
+	for alpha in H3Pos do
+		coeff := H3CoeffFromRootReadable(alpha);
+        preimage := FoldingPreimage(alpha);
+		Add(resultList, [ coeff, D6RootInStandForm(preimage[1]), D6RootInStandForm(preimage[2]) ]);
+	od;
+	return resultList;
+end;
+
 # Returns a list with one entry for each positive root alpha in H4.
 # Each entry is a list [ coeff, b1, b2 ] where coeff is the coefficient list of alpha with respect to H4Sim,
 # b1 is the unique root in E8 with projW2(b1) = alpha and b2 is the unique root in E8 with projW2(b2) = gold*alpha.
