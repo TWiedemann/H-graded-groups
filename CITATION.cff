@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: H-graded groups
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Torben
+    family-names: Wiedemann
+    orcid: 'https://orcid.org/0009-0000-7393-1074'
+    affiliation: RPTU University Kaiserslautern-Landau
+  - given-names: Lennart
+    family-names: Berg
+    affiliation: Justus Liebig University Gießen
+abstract: >-
+  GAP code which supports the paper "Root graded groups of
+  type H_3 and H_4" by Lennart Berg and Torben Wiedemann.
+license: MIT
+version: v1.0.1
+date-released: '2025-03-04'
