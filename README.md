@@ -4,4 +4,4 @@ The GAP (4.14.0) code in this repository contains several computations that supp
    (a) The realisation of the root systems $H_3$ and $H_4$ as foldings of $D_6$ and $E_8$, respectively.
    (b) The construction of an $H_4$-graded group from a Chevalley group of type $D_6$, of an $H_3$-graded group from a Chevalley group of type $E_8$, and computations in this group.
    
-Consult the corresponding readme files for more details.
+Consult the readme files in the corresponding folders for more details.
