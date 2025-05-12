@@ -400,7 +400,7 @@ end;
 
 # ---- End of functions for terms ---
 
-# ---- The blueprint rewriting rules, as in [BW, 7.11] ----
+# ---- The blueprint rewriting rules, as in [BW, 8.11] ----
 
 # Elementary homotopy 121 -> 212
 rule121 := function(list, startindex)
@@ -483,7 +483,7 @@ end;
 
 # ---- End of blueprint rewriting rules ----
 
-# ---- Blueprint computation, as in [BW, 7.8] ----
+# ---- Blueprint computation, as in [BW, 8.9] ----
 
 # Returns a list [ listDown, listUp ] which represents the result of the blueprint computation: listDown and listUp are lists of terms such that listDown[i] = listUp[i] is a blueprint identity for all i. All blueprint identities (i) for i <= idNum are used. If bPrintToFile is true, then a tex file with the results is printed to the directory mainDir.
 # This function with idNum = 0 is used to compute the basic form of the 15 blueprint identities, which are given in Blue_Identities.pdf.
@@ -579,8 +579,8 @@ end;
 identitiesForPaper := function()
 	local blueResult, listDown, listUp, blueIdToEvalList, nonZeroVarsList, filestring, outputFile, i, blueId, result, idNum;
 	
-	blueIdToEvalList := [ 12, 5, 9, 9, 14, 5, 7, 7, 13, 3, 3, 12, 7, 11, 11, 6, 7, 8, 6, 9, 3, 3, 12, 11, 4, 5, 3, 13, 7, 3, 3, 4, 6, 11, 6 ];
-	nonZeroVarsList := [ [ 4 ], [ 2, 15 ], [ 5, 8 ], [ 4, 5, 12 ], [ 1, 3 ], [ 1, 12 ], [ 4, 10, 12 ], [ 4, 10, 12 ], [ 1, 4 ], [ 7, 15 ], [ 10, 14 ], [ 2, 5 ], [ 7, 10 ], [ 1, 3, 8 ], [ 1, 4, 9 ], [ 3, 5, 13 ], [ 1, 4, 12 ], [ 4, 6, 15 ], [ 7, 10, 14 ], [ 2, 5, 14 ], [ 1, 14 ], [ 4, 15 ], [ 1, 5 ], [ 1, 5, 8 ], [ 4, 10, 15 ], [1, 4, 15 ], [ 5, 10, 15 ], [ 1, 5 ], [ 1, 5, 12 ], [ 3, 5, 15 ], [ 1, 5, 15 ], [ 1, 7, 15 ], [ 5, 10, 15 ], [ 1, 5, 12 ], [ 1, 4, 14 ] ];
+	blueIdToEvalList := [ 12, 5, 9, 9, 14, 5, 7, 7, 13, 3, 3, 12, 7, 11, 11, 6, 7, 8, 6, 9, 3, 3, 12, 11, 4, 5, 3, 13, 7, 3, 3, 4, 6, 11, 6 ]; # Second columns in Figures 7, 8, 0
+	nonZeroVarsList := [ [ 4 ], [ 2, 15 ], [ 5, 8 ], [ 4, 5, 12 ], [ 1, 3 ], [ 1, 12 ], [ 4, 10, 12 ], [ 4, 10, 12 ], [ 1, 4 ], [ 7, 15 ], [ 10, 14 ], [ 2, 5 ], [ 7, 10 ], [ 1, 3, 8 ], [ 1, 4, 9 ], [ 3, 5, 13 ], [ 1, 4, 12 ], [ 4, 6, 15 ], [ 7, 10, 14 ], [ 2, 5, 14 ], [ 1, 14 ], [ 4, 15 ], [ 1, 5 ], [ 1, 5, 8 ], [ 4, 10, 15 ], [1, 4, 15 ], [ 5, 10, 15 ], [ 1, 5 ], [ 1, 5, 12 ], [ 3, 5, 15 ], [ 1, 5, 15 ], [ 1, 7, 15 ], [ 5, 10, 15 ], [ 1, 5, 12 ], [ 1, 4, 14 ] ]; # Third columns in Figures 7, 8, 9
 	if Length(blueIdToEvalList) <> Length(nonZeroVarsList) then
 		return fail;
 	fi;
